@@ -1,0 +1,6 @@
+@phelrine「俺たちは言語を作る」
+
+1. How to use
+$ gcc tokenize.c
+$ ./a.out
+(list a b)
