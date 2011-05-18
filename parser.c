@@ -3,44 +3,11 @@
 #include<string.h>
 #include<assert.h>
 #include<ctype.h>
+#include"parser.h"
 #define BUFFER_SIZE 256
 
 
-typedef struct Object Object;
-/* car とcdr */
-struct cons{
-  Object *car;
-  Object *cdr;
-};
 
-/* 列挙型でObjecttype*/
-enum objecttype{
-  SYM,
-  NUM,
-  CONS,
-  NIL,
-  ENV,
-};
-
-typedef struct NodeName{
-  char *key;
-  struct Object *value;
-  struct NodeName *right;
-  struct NodeName *left;
-}Node;
-
-/* オブジェクトの構造体作成 */
-struct Object{
-  enum objecttype type;
-  union {
-    char *sp;
-    int iv;
-    struct cons pair;
-    Node *env;
-  }value;
-};
-
-struct Object *parse_sexp(FILE *);
 
 struct Object *make_num(int num){
   struct Object *object;
