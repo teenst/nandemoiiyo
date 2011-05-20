@@ -5,7 +5,6 @@
 #include "parser.h"
 
 int main(){
-
   // eval a to 1
   struct Object *env = make_env();
   struct Object *symbol=make_sym("a");
