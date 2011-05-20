@@ -21,4 +21,4 @@ struct Object *parse_sexp(FILE *);
 void read_eval_print_loop(FILE *,struct Object *);
 struct Object *parse_program(FILE *);
 
-#endif PARSER_H
+#endif
