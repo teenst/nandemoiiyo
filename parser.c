@@ -1,3 +1,4 @@
+/* parser.c */
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
@@ -126,7 +127,7 @@ char skip_space_getchar(FILE *fp){
   return buf;
 }
   
-//SYMのパース
+//SYMのパース
 struct Object *parse_sym(FILE *fp){
   int i=0;
   char buf;
@@ -144,7 +145,7 @@ struct Object *parse_sym(FILE *fp){
   return make_sym(tmp);
 }
 
-//NUMのパース
+//NUMのパース
 struct Object *parse_num(FILE *fp){
   int i=0;
   char buf;
