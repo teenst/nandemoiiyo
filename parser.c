@@ -5,24 +5,8 @@
 #include<assert.h>
 #include<ctype.h>
 #include"parser.h"
+#include"object.h"
 #define BUFFER_SIZE 256
-
-
-struct Object *make_num(int num){
-  struct Object *object;
-  object = malloc(sizeof(struct Object));
-  object->type = NUM;
-  object->value.iv = num;
-  return object;
-}
-struct Object *make_sym(const char *sym){
-  struct Object *object;
-  object = malloc(sizeof(struct Object));
-  object->type = SYM;
-  object->value.sp = strdup(sym);//なにこれ
-  return object;
-}
-
 
 Node *new_node(Node* mother,char* name){ //PTSD
   Node *node;
@@ -40,13 +24,11 @@ Node *new_node(Node* mother,char* name){ //PTSD
   return node;
 }
 
-
 Node *search(Node* node,char *key,Node*(*callback)(Node*,char*)){
   if(node ==NULL){
     return callback ? callback(NULL,key):NULL;
   }
   int diff = strcmp(node->key,key);
-
 
   if(diff==0){
     return callback ? callback(node,key):node;
@@ -72,11 +54,13 @@ struct Object *make_env(){
 struct Object *env_search(struct Object *env,struct Object *symbol){
   Node *tmp = search(env->value.env,symbol->value.sp,NULL);
   if(tmp == NULL){
+    printf("安心してください．\n");
     exit(1);
   }
   else
     return tmp->value;
 }
+
 struct Object *env_set(struct Object *env,struct Object *symbol,struct Object *value){
   Node *tmp = search(env->value.env,symbol->value.sp,new_node);
   tmp->value = value;
@@ -86,7 +70,6 @@ struct Object *env_set(struct Object *env,struct Object *symbol,struct Object *v
   }
   return value;
 }
-
 
 void print_object(struct Object *object){
   if(object==NULL){
@@ -110,14 +93,6 @@ void print_object(struct Object *object){
   return;
 }
 
-struct Object *make_cons(struct Object *car, struct Object *cdr){
-  struct Object* tmp_object;
-  tmp_object= (struct Object*)malloc(sizeof(struct Object));
-  tmp_object->type = CONS;
-  tmp_object->value.pair.car =car;
-  tmp_object->value.pair.cdr =cdr;
-  return tmp_object;
-}
 
 char skip_space_getchar(FILE *fp){
   char buf;
@@ -127,7 +102,7 @@ char skip_space_getchar(FILE *fp){
   return buf;
 }
   
-//SYMのパース
+//SYMのパース
 struct Object *parse_sym(FILE *fp){
   int i=0;
   char buf;
@@ -145,7 +120,7 @@ struct Object *parse_sym(FILE *fp){
   return make_sym(tmp);
 }
 
-//NUMのパース
+//NUMのパース
 struct Object *parse_num(FILE *fp){
   int i=0;
   char buf;
@@ -162,7 +137,6 @@ struct Object *parse_num(FILE *fp){
 
   return make_num(atoi(tmp));
 }
-
 
 struct Object *parse_list_inner(FILE *fp){
   struct cons tmp_cons;
@@ -238,14 +212,13 @@ struct Object *parse_sexp(FILE *fp){
   else if(buf=='('){
     return parse_list(fp);
   }
-  
 }
+
 void read_eval_print_loop(FILE *fp,struct Object *env){
   char buf;
   while((buf=getc(fp))!=EOF){
     ungetc(buf,fp);
     print_object(eval(parse_sexp(fp),env));
-#    
   }
 }
 
@@ -264,5 +237,3 @@ struct Object *parse_program(FILE *fp){
     return  parse_sexp(fp);
   }
 }
-
-

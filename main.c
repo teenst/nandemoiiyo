@@ -1,6 +1,7 @@
 /* main.c */
 #include<stdio.h>
 #include "parser.h"
+#include "object.h"
 
 int main(){
   struct Object *env = make_env();
