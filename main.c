@@ -1,3 +1,4 @@
+/* main.c */
 #include<stdio.h>
 #include "parser.h"
 
