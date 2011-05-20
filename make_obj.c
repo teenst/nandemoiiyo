@@ -3,6 +3,7 @@
 #include<string.h>
 #include"object.h"
 
+
 struct Object *make_num(int num){
   struct Object *object;
   object = malloc(sizeof(struct Object));

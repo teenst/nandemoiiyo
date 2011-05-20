@@ -1,20 +1,16 @@
 /* parser.h */
 #ifndef PARSER_H
 #define PARSER_H
-#include<stdio.h>
-#include"object.h"
+#include <stdio.h>
+#include "object.h"
 
-
-struct Object *parse_sexp(FILE *);
-struct Object *make_num(int);
-struct Object *make_sym(const char *);
 Node *new_node(Node*,char*);
 Node *search(Node* ,char*,Node*(*)(Node*,char*));
+
 struct Object *make_env();
 struct Object *env_search(struct Object *,struct Object *);
 struct Object *env_set(struct Object *,struct Object *,struct Object *);
 void print_object(struct Object *);
-struct Object *make_cons(struct Object *, struct Object *);
 char skip_space_getchar(FILE *);
 struct Object *parse_sym(FILE *);
 struct Object *parse_num(FILE *);

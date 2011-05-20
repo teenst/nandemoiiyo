@@ -4,8 +4,9 @@
 #include<string.h>
 #include<assert.h>
 #include<ctype.h>
-#include"parser.h"
 #include"object.h"
+#include"make_obj.h"
+#include"parser.h"
 #define BUFFER_SIZE 256
 
 Node *new_node(Node* mother,char* name){ //PTSD
