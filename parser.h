@@ -1,3 +1,4 @@
+/* parser.h */
 #ifndef PARSER_H
 #define PARSER_H
 
@@ -9,7 +10,7 @@ struct cons{
   Object *cdr;
 };
 
-/* 列挙型でObjecttype*/
+/* 列挙型でObjecttype*/
 enum objecttype{
   SYM,
   NUM,
@@ -17,7 +18,7 @@ enum objecttype{
   NIL,
   ENV,
 };
-/* 保持のためのノード*/
+/* 保持のためのノード*/
 typedef struct NodeName{
   char *key;
   struct Object *value;
@@ -25,7 +26,7 @@ typedef struct NodeName{
   struct NodeName *left;
 }Node;
 
-/* オブジェクトの構造体作成 */
+/* オブジェクトの構造体作成 */
 struct Object{
   enum objecttype type;
   union {
