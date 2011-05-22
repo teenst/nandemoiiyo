@@ -3,8 +3,8 @@
 #define MAKE_OBJ_H
 #include"object.h"
 
-struct Object *make_num(int);
-struct Object *make_sym(const char*);
-struct Object *make_cons(struct Object*, struct Object*);
+object_t *make_num(int);
+object_t *make_sym(const char*);
+object_t *make_cons(object_t*, object_t*);
 
 #endif

@@ -2,16 +2,17 @@
 #ifndef OBJECT_H
 #define OBJECT_H
 
-typedef struct Object Object;
+typedef struct object_tag object_t;
+typedef struct node_tag node_t;
 
 /* car とcdr */
-struct cons{
-  Object *car;
-  Object *cdr;
-};
+typedef struct{
+  object_t *car;
+  object_t *cdr;
+}cons_t;
 
-/* 列挙型でObjecttype*/
-enum objecttype{
+/* 列挙型でObjecttype*/
+enum object_type{
   SYM,
   NUM,
   CONS,
@@ -19,22 +20,18 @@ enum objecttype{
   ENV,
 };
 
-/* 保持のためのノード*/
-typedef struct NodeName{
-  char *key;
-  struct Object *value;
-  struct NodeName *right;
-  struct NodeName *left;
-}Node;
 
-/* オブジェクトの構造体作成 */
-struct Object{
-  enum objecttype type;
+/* オブジェクトの構造体作成 */
+struct object_tag{
+  enum object_type type;
   union {
     char *sp;
     int iv;
-    struct cons pair;
-    Node *env;
+    cons_t pair;
+    node_t *env;
   }value;
 };
+
+void print_object(object_t *object);
+object_t *eval(object_t *object,object_t *env);
 #endif

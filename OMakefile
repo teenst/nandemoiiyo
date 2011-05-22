@@ -161,4 +161,4 @@
 
 CC = gcc
 CFLAGS += -g
-CProgram(a.out, main make_obj parser)
+CProgram(a.out, main make_obj parser env object)

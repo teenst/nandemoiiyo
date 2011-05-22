@@ -1,98 +1,15 @@
 /* parser.c */
 #include<stdio.h>
 #include<stdlib.h>
-#include<string.h>
 #include<assert.h>
 #include<ctype.h>
 #include"object.h"
+#include"node.h"
 #include"make_obj.h"
 #include"parser.h"
+#include"env.h"
+
 #define BUFFER_SIZE 256
-
-Node *new_node(Node* mother,char* name){ //PTSD
-  Node *node;
-  node = (Node*)malloc(sizeof(Node));
-  node->key = name;
-
-  if(mother==NULL){
-    return node;
-  }
-  if(strcmp(mother->key,name)>0){
-    mother->left = node;
-  }else
-    mother->right =node;
-
-  return node;
-}
-
-Node *search(Node* node,char *key,Node*(*callback)(Node*,char*)){
-  if(node ==NULL){
-    return callback ? callback(NULL,key):NULL;
-  }
-  int diff = strcmp(node->key,key);
-
-  if(diff==0){
-    return callback ? callback(node,key):node;
-  }
-  
-  Node* next = (diff >0)?node->left : node->right;
-  
-  return 
-    (next==NULL  && callback) ? callback(node,key): 
-    next ? search(next,key,callback): NULL;
-}
-
-
-struct Object *make_env(){
-  struct Object *env;
-  env = (struct Object *)malloc(sizeof(struct Object));
-  env->type = ENV;
-  env->value.env = NULL;
-  return env;
-}
-
-
-struct Object *env_search(struct Object *env,struct Object *symbol){
-  Node *tmp = search(env->value.env,symbol->value.sp,NULL);
-  if(tmp == NULL){
-    printf("安心してください．\n");
-    exit(1);
-  }
-  else
-    return tmp->value;
-}
-
-struct Object *env_set(struct Object *env,struct Object *symbol,struct Object *value){
-  Node *tmp = search(env->value.env,symbol->value.sp,new_node);
-  tmp->value = value;
-
-  if(env->value.env ==NULL){
-    env->value.env =  tmp;
-  }
-  return value;
-}
-
-void print_object(struct Object *object){
-  if(object==NULL){
-    printf("NIL\n");
-    return;
-  }
-  switch(object ->type){
-  case SYM:
-    printf("SYM %s\n",object->value.sp);
-    break;
-  case NUM:
-    printf("NUM %d\n",object->value.iv);
-    break;
-  case CONS:
-    print_object(object->value.pair.car);
-    print_object(object->value.pair.cdr);
-    break;
-  default:
-    break;
-  }
-  return;
-}
 
 
 char skip_space_getchar(FILE *fp){
@@ -104,7 +21,7 @@ char skip_space_getchar(FILE *fp){
 }
   
 //SYMのパース
-struct Object *parse_sym(FILE *fp){
+object_t *parse_sym(FILE *fp){
   int i=0;
   char buf;
   char tmp[BUFFER_SIZE];
@@ -122,7 +39,7 @@ struct Object *parse_sym(FILE *fp){
 }
 
 //NUMのパース
-struct Object *parse_num(FILE *fp){
+object_t *parse_num(FILE *fp){
   int i=0;
   char buf;
   char tmp[BUFFER_SIZE];
@@ -139,8 +56,8 @@ struct Object *parse_num(FILE *fp){
   return make_num(atoi(tmp));
 }
 
-struct Object *parse_list_inner(FILE *fp){
-  struct cons tmp_cons;
+object_t *parse_list_inner(FILE *fp){
+  cons_t tmp_cons;
   char buf;
   buf=skip_space_getchar(fp);   
 
@@ -162,8 +79,8 @@ struct Object *parse_list_inner(FILE *fp){
 }
 
 
-struct Object *parse_list(FILE *fp){
-  struct cons tmp_cons;
+object_t *parse_list(FILE *fp){
+  cons_t tmp_cons;
   char buf;
   buf=skip_space_getchar(fp);
 
@@ -182,23 +99,8 @@ struct Object *parse_list(FILE *fp){
   return make_cons(tmp_cons.car,tmp_cons.cdr);
 }
 
-struct Object *eval(struct Object *object,struct Object *env){
-  switch(object->type){
-  case SYM:
-    return env_search(env,object);
-  case NUM:
-    return object;
-    break;
-  case CONS:
-    break;
-  case NIL:
-    break;
-  default:
-    break;
-  }
-}
 
-struct Object *parse_sexp(FILE *fp){
+object_t *parse_sexp(FILE *fp){
   char buf;
   buf=skip_space_getchar(fp);
 
@@ -213,18 +115,11 @@ struct Object *parse_sexp(FILE *fp){
   else if(buf=='('){
     return parse_list(fp);
   }
-}
-
-void read_eval_print_loop(FILE *fp,struct Object *env){
-  char buf;
-  while((buf=getc(fp))!=EOF){
-    ungetc(buf,fp);
-    print_object(eval(parse_sexp(fp),env));
-  }
+  return (object_t*)NULL;
 }
 
 
-struct Object *parse_program(FILE *fp){
+object_t *parse_program(FILE *fp){
   char  buf; 
   
   buf = getc(fp);
