@@ -40,10 +40,12 @@ object_t *eval(object_t *object,object_t *env){
     tmp = object;
     for(i=0;i<3;i++){
       args[i] = tmp->value.pair.car;
+      print_object(args[i]);
       tmp = tmp->value.pair.cdr;
     }
-    if(!strcmp(args[0]->value.sp,"setq")){
-      return env_set(env,args[1],args[2]);
+    if(!strcmp(args[0],"setq")){
+      returnenv_set(env,args[1],args[2]);
+      return args[2];
     }
     
     break;
