@@ -27,8 +27,8 @@ void print_object(object_t *object){
 }
 
 object_t *eval(object_t *object,object_t *env){
-  object_t *tmp,*args[10]={NULL};
-  int i;
+  object_t *tmp,*args,*func,*head,*pre;
+
   switch(object->type){
   case SYM:
     return env_search(env,object);
@@ -36,16 +36,41 @@ object_t *eval(object_t *object,object_t *env){
     return object;
     break;
   case CONS:
-    /* listから要素を取り出す   */
-    tmp = object;
-    for(i=0;i<3;i++){
-      args[i] = tmp->value.pair.car;
-      tmp = tmp->value.pair.cdr;
+    tmp =object;
+    func = eval(tmp->value.pair.car,env);
+    
+    tmp = tmp->value.pair.cdr;
+    if(tmp==NULL){
+      head = NULL;
     }
-    if(!strcmp(args[0]->value.sp,"setq")){
-      return env_set(env,args[1],args[2]);
+    else{
+      args = malloc(sizeof(object_t));
+      args->type = CONS;
+      head = args;
+      while(tmp!=NULL){
+        args->value.pair.car = eval(tmp->value.pair.car,env);
+        pre = args;
+        args = malloc(sizeof(object_t));
+        args ->type =CONS;
+        pre->value.pair.cdr = args;
+        tmp = tmp->value.pair.cdr;
+      }
+      free(args);
+      pre->value.pair.cdr = NULL;
     }
     
+    return func->value.func(head);
+    
+    /*     /\* listから要素を取り出す   *\/ */
+    /* tmp = object; */
+    /* for(i=0;i<3;i++){ */
+    /*   args[i] = tmp->value.pair.car; */
+    /*   tmp = tmp->value.pair.cdr; */
+    /* } */
+    /* if(!strcmp(args[0]->value.sp,"setq")){ */
+    /*   return env_set(env,args[1],args[2]); */
+    /* } */
+        
     break;
   case NIL:
     break;

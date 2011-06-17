@@ -26,7 +26,7 @@ object_t *parse_sym(FILE *fp){
   char tmp[BUFFER_SIZE];
   buf=skip_space_getchar(fp);
  
-  while(isalpha(buf)){
+  while(isalpha(buf)||buf=='+'){
     tmp[i]=buf;    
     buf = getc(fp);
     i++;
@@ -105,7 +105,7 @@ object_t *parse_sexp(FILE *fp){
 
   ungetc(buf,fp);
 
-  if(isalpha(buf)){
+  if(isalpha(buf)||buf=='+'){
     return parse_sym(fp);
   }
   else if(isdigit(buf)){

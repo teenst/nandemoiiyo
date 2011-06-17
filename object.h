@@ -18,6 +18,7 @@ enum object_type{
   CONS,
   NIL,
   ENV,
+  FUNC
 };
 
 
@@ -29,6 +30,7 @@ struct object_tag{
     int iv;
     cons_t pair;
     node_t *env;
+    object_t *(*func)(object_t*);
   }value;
 };
 
