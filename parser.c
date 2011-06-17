@@ -4,7 +4,6 @@
 #include<assert.h>
 #include<ctype.h>
 #include"object.h"
-#include"node.h"
 #include"make_obj.h"
 #include"parser.h"
 #include"env.h"
