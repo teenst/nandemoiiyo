@@ -1,7 +1,8 @@
 a.out*
 *~
-#*
+*#
 .omakedb
 *.omc
 *.o
 .OMakedb.*
+

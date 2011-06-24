@@ -1,6 +1,11 @@
 @phelrine「俺たちは言語を作る」
 
 1. How to use
-$ gcc tokenize.c
+1.1 make
+$ omake a.out
+
+1.2 use
 $ ./a.out
-(list a b)
+(+ 3 4) 
+
+sum 
