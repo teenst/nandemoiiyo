@@ -17,15 +17,29 @@ void read_eval_print_loop(FILE *fp,object_t *env){
 int main(){
   // eval a to 1
   object_t *env = make_env();
-
+  // for add func
+  object_t *symbol; 
+  object_t *function;
+  
   // add plus func
-  object_t *symbol=make_sym("+");
-  object_t *function=make_func(plus_func);
+  symbol=make_sym("+");
+  function=make_func(plus_func);
   env_set(env,symbol,function);
 
-  object_t *symbol_m=make_sym("*");
-  object_t *function_m=make_func(multiply_func);
-  env_set(env,symbol_m,function_m);
+  // add multiply func
+  symbol=make_sym("*");
+  function=make_func(multiply_func);
+  env_set(env,symbol,function);
+  
+  // add subtraction func
+  symbol=make_sym("-");
+  function=make_func(subtraction_func);
+  env_set(env,symbol,function);
+
+  // add subtraction func
+  symbol=make_sym("/");
+  function=make_func(division_func);
+  env_set(env,symbol,function);
 
 
   //roop
