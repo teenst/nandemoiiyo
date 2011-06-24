@@ -5,7 +5,7 @@
 #include"object.h"
 
 void print_object(object_t *object){
-  if(object==NULL){
+  if(object==nil){
     printf("NIL\n");
     return;
   }
@@ -26,7 +26,8 @@ void print_object(object_t *object){
   return;
 }
 
-object_t *eval(object_t *object,object_t *env){
+//オブジェクトの評価を行う
+object_t *eval(object_t *object,object_t *env){ 
   object_t *tmp,*args,*func,*head,*pre;
 
   switch(object->type){
@@ -37,28 +38,32 @@ object_t *eval(object_t *object,object_t *env){
     break;
   case CONS:
     tmp =object;
-    func = eval(tmp->value.pair.car,env);
+    func = eval(tmp->value.pair.car,env); //pair car部の評価(operator考慮)
     
-    tmp = tmp->value.pair.cdr;
-    if(tmp==NULL){
-      head = NULL;
+    tmp = tmp->value.pair.cdr;//pair cdr部の保存
+    
+    if(tmp == nil){
+      head = nil;
     }
+
     else{
       args = malloc(sizeof(object_t));
       args->type = CONS;
-      head = args;
-      while(tmp!=NULL){
-        args->value.pair.car = eval(tmp->value.pair.car,env);
-        pre = args;
+      head = args; //headに保存
+      while(tmp != nil){
+        //car部を評価し，argのcar部にぶち込む
+        args->value.pair.car = eval(tmp->value.pair.car,env); 
+        pre = args;//preに保存
+
         args = malloc(sizeof(object_t));
         args ->type =CONS;
         pre->value.pair.cdr = args;
         tmp = tmp->value.pair.cdr;
       }
       free(args);
-      pre->value.pair.cdr = NULL;
+      pre->value.pair.cdr = nil;
     }
-    
+
     return func->value.func(head);
     
     /*     /\* listから要素を取り出す   *\/ */

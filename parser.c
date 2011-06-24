@@ -10,6 +10,9 @@
 
 #define BUFFER_SIZE 256
 
+//nilを設定する
+const object_t nil_instance = {NIL,{NULL}};
+object_t* nil = &nil_instance;
 
 char skip_space_getchar(FILE *fp){
   char buf;
@@ -67,7 +70,7 @@ object_t *parse_list_inner(FILE *fp){
 
 
   if(buf == ')'){
-    tmp_cons.cdr = NULL;
+    tmp_cons.cdr = nil;
   }
   else{
     ungetc(buf,fp);
@@ -88,7 +91,7 @@ object_t *parse_list(FILE *fp){
   buf=skip_space_getchar(fp);
 
   if(buf == ')'){
-    tmp_cons.cdr = NULL;
+    tmp_cons.cdr = nil; //nilの
   }
   else{
     ungetc(buf,fp);

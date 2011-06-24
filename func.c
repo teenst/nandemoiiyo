@@ -17,7 +17,7 @@ object_t *plus_func(object_t* args){
   int num=0;
   object_t *tmp=args;
 
-  while(tmp!=NULL){
+  while(tmp != nil){
     num += tmp->value.pair.car->value.iv;
     tmp=tmp->value.pair.cdr;
   }
@@ -29,7 +29,7 @@ object_t *multiply_func(object_t* args){
   int num=1;
   object_t *tmp=args;
 
-  while(tmp!=NULL){
+  while(tmp != nil){
     num *= tmp->value.pair.car->value.iv;
     tmp=tmp->value.pair.cdr;
   }
@@ -43,7 +43,7 @@ object_t *subtraction_func(object_t* args){
   int num=tmp->value.pair.car->value.iv;
   tmp=tmp->value.pair.cdr;
 
-  while(tmp!=NULL){
+  while(tmp!= nil){
     num -= tmp->value.pair.car->value.iv;
     tmp=tmp->value.pair.cdr;
   }

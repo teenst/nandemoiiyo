@@ -36,4 +36,7 @@ struct object_tag{
 
 void print_object(object_t *object);
 object_t *eval(object_t *object,object_t *env);
+
+extern object_t* nil;
+
 #endif

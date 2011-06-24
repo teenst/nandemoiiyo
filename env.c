@@ -27,7 +27,7 @@ static node_t *new_node(node_t* mother,char* name){
 }
 
 static node_t *search(node_t* node,char *key,node_t*(*callback)(node_t*,char*)){
-  if(node ==NULL){
+  if(node == NULL){
     return callback ? callback(NULL,key):NULL;
   }
   int diff = strcmp(node->key,key);
