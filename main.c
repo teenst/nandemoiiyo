@@ -36,12 +36,6 @@ int main(){
   function=make_func(subtraction_func);
   env_set(env,symbol,function);
 
-  // add subtraction func
-  symbol=make_sym("/");
-  function=make_func(division_func);
-  env_set(env,symbol,function);
-
-
   //roop
   read_eval_print_loop(stdin,env);
   return 0;
