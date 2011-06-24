@@ -23,6 +23,11 @@ int main(){
   object_t *function=make_func(plus_func);
   env_set(env,symbol,function);
 
+  object_t *symbol_m=make_sym("*");
+  object_t *function_m=make_func(multiply_func);
+  env_set(env,symbol_m,function_m);
+
+
   //roop
   read_eval_print_loop(stdin,env);
   return 0;

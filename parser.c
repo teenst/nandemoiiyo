@@ -1,3 +1,4 @@
+
 /* parser.c */
 #include<stdio.h>
 #include<stdlib.h>
@@ -26,7 +27,7 @@ object_t *parse_sym(FILE *fp){
   char tmp[BUFFER_SIZE];
   buf=skip_space_getchar(fp);
  
-  while(isalpha(buf)||buf=='+'){
+  while(isalpha(buf) || buf=='+' || buf=='*'){
     tmp[i]=buf;    
     buf = getc(fp);
     i++;
@@ -58,12 +59,12 @@ object_t *parse_num(FILE *fp){
 object_t *parse_list_inner(FILE *fp){
   cons_t tmp_cons;
   char buf;
-  buf=skip_space_getchar(fp);   
+  buf=skip_space_getchar(fp);
 
   ungetc(buf,fp);
-  
+
   tmp_cons.car = parse_sexp(fp);
-  buf=skip_space_getchar(fp);   
+  buf=skip_space_getchar(fp);
 
 
   if(buf == ')'){
@@ -105,7 +106,7 @@ object_t *parse_sexp(FILE *fp){
 
   ungetc(buf,fp);
 
-  if(isalpha(buf)||buf=='+'){
+  if(isalpha(buf) || buf=='+' || buf=='*'){
     return parse_sym(fp);
   }
   else if(isdigit(buf)){
@@ -119,7 +120,7 @@ object_t *parse_sexp(FILE *fp){
 
 
 object_t *parse_program(FILE *fp){
-  char  buf; 
+  char  buf;
   
   buf = getc(fp);
   
